@@ -17,7 +17,7 @@ app_config = {}
 
 
 def getToken():
-    # Gets the oken for the omfsendpoint
+    # Gets the token for the omf endpoint
     global app_config
 
     if app_config['destinationEDS']:
