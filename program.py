@@ -107,8 +107,9 @@ def getHeaders(message_type="", action=""):
 
     # Assemble headers
     if app_config['destinationOCS']:
+        token = getToken()
         msg_headers = {
-            "Authorization": "Bearer %s" % getToken(),
+            'Authorization': 'Bearer ' + token,
             'messagetype': message_type,
             'action': action,
             'messageformat': 'JSON',
@@ -157,7 +158,7 @@ def getAppConfig():
         timeout = 30
     app_config['timeout'] = timeout
 
-    if verify == "False" or verify == "false"or verify == "FALSE":
+    if verify == "False" or verify == "false" or verify == "FALSE":
         verify = False
     else:
         verify = True
