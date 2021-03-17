@@ -113,7 +113,10 @@ def getHeaders(message_type="", action=""):
             'messageformat': 'JSON',
             'omfversion': app_config['version']
         }
-        msg_headers['Authorization'] = "Bearer %s" % getToken()
+
+        auth = "Bearer %s" % getToken()
+        if re.match('Bearer\s[\d|a-f]{8}-([\d|a-f]{4}-){3}[\d|a-f]{12}', auth):
+          msg_headers['Authorization'] = auth
     elif app_config['destinationEDS']:
         msg_headers = {
             'messagetype': message_type,
