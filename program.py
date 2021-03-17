@@ -107,14 +107,13 @@ def getHeaders(message_type="", action=""):
 
     # Assemble headers
     if app_config['destinationOCS']:
-        token = getToken()
         msg_headers = {
-            'Authorization': 'Bearer ' + token,
             'messagetype': message_type,
             'action': action,
             'messageformat': 'JSON',
             'omfversion': app_config['version']
         }
+        msg_headers['Authorization'] = "Bearer %s" % getToken()
     elif app_config['destinationEDS']:
         msg_headers = {
             'messagetype': message_type,
