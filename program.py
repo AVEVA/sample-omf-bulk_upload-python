@@ -73,6 +73,10 @@ def send_omf_message_to_endpoint(message_type, msg_body, action='create'):
     msg_headers = getHeaders(message_type, action)
     response = {}
 
+    for key in msg_headers:
+        if key not in {'Authorization', 'messagetype', 'action', 'messageformat', 'omfversion', 'x-requested-with'}:
+            raise Exception('Bad header')
+
     # Assemble headers
     if app_config['destinationPI']:
         response = requests.post(
