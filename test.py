@@ -83,7 +83,7 @@ def checkData():
 
 def checkLastOCSVal():
     # Wait for data to populate in OCS
-    time.sleep(5)
+    time.sleep(10)
 
     global app_config
     msg_headers = program.sanitizeHeaders({
