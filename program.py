@@ -59,7 +59,10 @@ def getToken():
         raise Exception("Failed to retrieve Token")
 
     app_config['__expiration'] = float(token['expires_in']) + time.time()
-    app_config['__token'] = token['access_token']
+    # Validate token
+    access_token = re.match(r'^[a-zA-Z0-9_.-]+$',
+                            token['access_token']).group(0)
+    app_config['__token'] = access_token
     return app_config['__token']
 
 
@@ -112,14 +115,8 @@ def getHeaders(message_type="", action=""):
 
     # Assemble headers
     if app_config['destinationOCS']:
-        token = 'Bearer %s' % getToken()
-
-        # Validate authentication header
-        match = re.search(r'^Bearer\s[a-zA-Z0-9_.-]*$', token)
-        auth = match.group(0)
-
         msg_headers = {
-            'Authorization': auth,
+            'Authorization': 'Bearer %s' % getToken(),
             'messagetype': message_type,
             'action': action,
             'messageformat': 'JSON',

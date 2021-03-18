@@ -48,8 +48,6 @@ jobs:
           fileOriginal: $(CredFile)
           fileLibrary: $(CredFileLibrary)
 
-      - script: python --version
-
       - script: |
           echo Install tools
           pip install setuptools wheel
