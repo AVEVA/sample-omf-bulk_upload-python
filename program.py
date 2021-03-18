@@ -59,10 +59,7 @@ def getToken():
         raise Exception("Failed to retrieve Token")
 
     app_config['__expiration'] = float(token['expires_in']) + time.time()
-    # Validate token
-    access_token = re.match(r'^[a-zA-Z0-9_.-]+$',
-                            token['access_token']).group(0)
-    app_config['__token'] = access_token
+    app_config['__token'] = token['access_token']
     return app_config['__token']
 
 
@@ -75,10 +72,6 @@ def send_omf_message_to_endpoint(message_type, msg_body, action='create'):
 
     msg_headers = getHeaders(message_type, action)
     response = {}
-
-    for key in msg_headers:
-        if key not in {'Authorization', 'messagetype', 'action', 'messageformat', 'omfversion', 'x-requested-with'}:
-            raise Exception('Bad header')
 
     # Assemble headers
     if app_config['destinationPI']:
@@ -137,7 +130,14 @@ def getHeaders(message_type="", action=""):
             'messageformat': 'JSON',
             'omfversion': app_config['version']
         }
-    return msg_headers
+
+    validated_headers = {}
+
+    for key in msg_headers:
+        if key in {'Authorization', 'messagetype', 'action', 'messageformat', 'omfversion', 'x-requested-with'}:
+            validated_headers[key] = msg_headers[key]
+
+    return validated_headers
 
 
 def getConfig(section, field):
