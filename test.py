@@ -83,9 +83,9 @@ def checkData():
 
 def checkLastOCSVal():
     global app_config
-    msg_headers = program.sanitizeHeaders({
+    msg_headers = {
         "Authorization": "Bearer %s" % program.getToken(),
-    })
+    }
     url = app_config['omfURL'].split(
         '/omf')[0] + '/streams/Tank1Measurements/data/last'
     response = requests.get(
