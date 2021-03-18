@@ -70,12 +70,6 @@ jobs:
         displayName: 'Publish test results'
 
   - job: Tests_OnPrem
-    strategy:
-      matrix:
-        OnPrem:
-          fileLibrary: $(CredFileLibraryOP)
-        EDS:
-          fileLibrary: $(CredFileLibaryEDS)
     pool:
       name: 00-OSIManaged-Test
       demands: COMPUTERNAME -equals $(buildAgent)
@@ -83,7 +77,31 @@ jobs:
       - template: '/miscellaneous/build_templates/config.yml@templates'
         parameters:
           fileOriginal: $(CredFile)
-          fileLibrary: $(fileLibrary)
+          fileLibrary: $(CredFileLibraryOP)
+
+      - script: pip install -r requirements.txt
+        displayName: 'Install requirements'
+
+      - script: python -m pytest --junitxml=junit/test-results.xml ./test.py
+        displayName: 'Run tests'
+
+      - task: PublishTestResults@2
+        condition: succeededOrFailed()
+        inputs:
+          testResultsFiles: '**/test-*.xml'
+          failTaskOnFailedTests: true
+          testRunTitle: '$(Agent.JobName) on $(Agent.OS)'
+        displayName: 'Publish test results'
+
+  - job: Tests_EDS
+    pool:
+      name: 00-OSIManaged-Test
+      demands: COMPUTERNAME -equals $(buildAgent)
+    steps:
+      - template: '/miscellaneous/build_templates/config.yml@templates'
+        parameters:
+          fileOriginal: $(CredFile)
+          fileLibrary: $(CredFileLibraryEDS)
 
       - script: pip install -r requirements.txt
         displayName: 'Install requirements'
