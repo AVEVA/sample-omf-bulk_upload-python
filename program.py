@@ -12,6 +12,7 @@ import json
 import requests
 import traceback
 import time
+import re
 
 app_config = {}
 
@@ -107,16 +108,19 @@ def getHeaders(message_type="", action=""):
 
     # Assemble headers
     if app_config['destinationOCS']:
+        token = 'Bearer %s' % getToken()
+
+        # Validate authentication header
+        match = re.search(r'^Bearer\s[a-zA-Z0-9_.-]*$', token)
+        auth = match.group(0)
+
         msg_headers = {
+            'Authorization': auth,
             'messagetype': message_type,
             'action': action,
             'messageformat': 'JSON',
             'omfversion': app_config['version']
         }
-
-        auth = "Bearer %s" % getToken()
-        if re.match('Bearer\s[\d|a-f]{8}-([\d|a-f]{4}-){3}[\d|a-f]{12}', auth):
-          msg_headers['Authorization'] = auth
     elif app_config['destinationEDS']:
         msg_headers = {
             'messagetype': message_type,
