@@ -45,9 +45,15 @@ def getToken():
         raise ValueError
 
     tokenEndpoint = json.loads(discoveryUrl.content)["token_endpoint"]
+    tokenUrl = ''
+    if (tokenEndpoint.startswith(baseURL)):
+        tokenUrl = tokenEndpoint
+    else:
+        raise Exception(
+            "Failed to validate token endpoint URL %s" % tokenEndpoint)
 
     tokenInformation = requests.post(
-        tokenEndpoint,
+        tokenUrl,
         data={"client_id": app_config['id'],
               "client_secret": app_config['password'],
               "grant_type": "client_credentials"},
@@ -131,11 +137,15 @@ def getHeaders(message_type="", action=""):
             'omfversion': app_config['version']
         }
 
+    return sanitizeHeaders(msg_headers)
+
+
+def sanitizeHeaders(headers):
     validated_headers = {}
 
-    for key in msg_headers:
+    for key in headers:
         if key in {'Authorization', 'messagetype', 'action', 'messageformat', 'omfversion', 'x-requested-with'}:
-            validated_headers[key] = msg_headers[key]
+            validated_headers[key] = headers[key]
 
     return validated_headers
 
