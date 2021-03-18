@@ -12,7 +12,6 @@ import json
 import requests
 import traceback
 import time
-import re
 
 app_config = {}
 
@@ -45,15 +44,9 @@ def getToken():
         raise ValueError
 
     tokenEndpoint = json.loads(discoveryUrl.content)["token_endpoint"]
-    tokenUrl = ''
-    if (tokenEndpoint.startswith(baseURL)):
-        tokenUrl = tokenEndpoint
-    else:
-        raise Exception(
-            "Failed to validate token endpoint URL %s" % tokenEndpoint)
 
     tokenInformation = requests.post(
-        tokenUrl,
+        tokenEndpoint,
         data={"client_id": app_config['id'],
               "client_secret": app_config['password'],
               "grant_type": "client_credentials"},
@@ -115,7 +108,7 @@ def getHeaders(message_type="", action=""):
     # Assemble headers
     if app_config['destinationOCS']:
         msg_headers = {
-            'Authorization': 'Bearer %s' % getToken(),
+            "Authorization": "Bearer %s" % getToken(),
             'messagetype': message_type,
             'action': action,
             'messageformat': 'JSON',
@@ -136,18 +129,7 @@ def getHeaders(message_type="", action=""):
             'messageformat': 'JSON',
             'omfversion': app_config['version']
         }
-
-    return sanitizeHeaders(msg_headers)
-
-
-def sanitizeHeaders(headers):
-    validated_headers = {}
-
-    for key in headers:
-        if key in {'Authorization', 'messagetype', 'action', 'messageformat', 'omfversion', 'x-requested-with'}:
-            validated_headers[key] = headers[key]
-
-    return validated_headers
+    return msg_headers
 
 
 def getConfig(section, field):
@@ -175,7 +157,7 @@ def getAppConfig():
         timeout = 30
     app_config['timeout'] = timeout
 
-    if verify == "False" or verify == "false" or verify == "FALSE":
+    if verify == "False" or verify == "false"or verify == "FALSE":
         verify = False
     else:
         verify = True
