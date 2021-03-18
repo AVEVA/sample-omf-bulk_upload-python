@@ -12,7 +12,7 @@ import json
 import requests
 import traceback
 import time
-import re
+from urllib.parse import urlparse
 
 app_config = {}
 
@@ -45,15 +45,13 @@ def getToken():
         raise ValueError
 
     tokenEndpoint = json.loads(discoveryUrl.content)["token_endpoint"]
-    tokenUrl = ''
-    if (tokenEndpoint.startswith(baseURL)):
-        tokenUrl = tokenEndpoint
-    else:
-        raise Exception(
-            "Failed to validate token endpoint URL %s" % tokenEndpoint)
+    tokenUrl = urlparse(tokenEndpoint)
+    # Validate URL
+    assert tokenUrl.scheme == 'https'
+    assert tokenUrl.geturl().startswith(baseURL)
 
     tokenInformation = requests.post(
-        tokenUrl,
+        tokenUrl.geturl(),
         data={"client_id": app_config['id'],
               "client_secret": app_config['password'],
               "grant_type": "client_credentials"},
