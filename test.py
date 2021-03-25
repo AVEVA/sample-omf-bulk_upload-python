@@ -1,9 +1,9 @@
 
 import requests
 import program as program
-import json
 import sys
 import traceback
+import time
 
 
 app_config = {}
@@ -33,20 +33,20 @@ def checkValueGone(url):
     msg_headers = program.getHeaders()
 
     # Send the request, and collect the response
-    if app_config.PI:
+    if app_config['PI']:
         response = requests.get(
             url,
             headers=msg_headers,
-            verify=app_config.VERIFY_SSL,
-            timeout=app_config.WEB_REQUEST_TIMEOUT_SECONDS,
-            auth=(app_config.Id, app_config.Secret)
+            verify=app_config['VERIFY_SSL'],
+            timeout=app_config['WEB_REQUEST_TIMEOUT_SECONDS'],
+            auth=(app_config['Id'], app_config['Secret'])
         )
     else:
         response = requests.get(
             url,
             headers=msg_headers,
-            verify=app_config.VERIFY_SSL,
-            timeout=app_config.WEB_REQUEST_TIMEOUT_SECONDS,
+            verify=app_config['VERIFY_SSL'],
+            timeout=app_config['WEB_REQUEST_TIMEOUT_SECONDS'],
         )
 
     # response code in 200s if the request was successful!
@@ -82,10 +82,13 @@ def checkData():
 
 
 def checkLastOCSVal():
+    # Wait for data to populate in OCS
+    time.sleep(10)
+
     global app_config
-    msg_headers = {
+    msg_headers = program.sanitizeHeaders({
         "Authorization": "Bearer %s" % program.getToken(),
-    }
+    })
     url = app_config['omfURL'].split(
         '/omf')[0] + '/streams/Tank1Measurements/data/last'
     response = requests.get(
