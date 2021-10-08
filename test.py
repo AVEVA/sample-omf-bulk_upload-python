@@ -23,7 +23,6 @@ def send_container_delete(endpoint):
 
 
 def check_data(endpoint):
-    global app_config
     if endpoint["EndpointType"] == program.EndpointTypes.OCS:
         check_last_ocs_val(endpoint)
     # don't have to check others as they are sync and we get instant feedback on success from the app itself
@@ -32,8 +31,6 @@ def check_data(endpoint):
 def check_last_ocs_val(endpoint):
     '''Wait for data to populate in OCS'''
     time.sleep(10)
-
-    global app_config
     
     msg_headers = {
         "Authorization": "Bearer %s" % program.get_token(endpoint),
@@ -66,7 +63,6 @@ def check_last_ocs_val(endpoint):
 
 
 def test_main(only_delete: bool = False):
-    global app_config
     '''Tests to make sure the sample runs as expected'''
 
     try:
