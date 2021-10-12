@@ -134,28 +134,6 @@ The format of the configuration for a PI endpoint is shown below along with desc
 | UseCompression           | optional | boolean        | A feature flag for enabling compression on messages sent to the OCS endpoint                                                                                                                                                                                                            |
 | WebRequestTimeoutSeconds | optional | integer        | A feature flag for changing how long it takes for a request to time out                                                                                                                                                                                                                 |
 
-## Running the Sample
-
-1. Clone the GitHub repository
-1. Install required modules: `pip install -r requirements.txt`
-1. Open the folder with your favorite IDE
-1. Update `appsettings.json` with your credentials
-1. Check and update the program to ensure you are sending to OCS or PI.
-1. Run `program.py` from commandline run `python program.py`
-
-## Running the Automated Test
-
-Complete steps 1-5 above. Then:
-
-1. Run `python test_sample.py`
-
-or
-
-1. Install pytest `pip install pytest`
-1. Run `pytest test_sample.py`
-
-The test sends a single OMF type, container, and data message to each of the configured OMF endpoints. Then, the test checks that a value with a recent timestamp is found in OSIsoft Cloud Services. The Edge Data Store and PI Web API OMF endpoints return an HTTP error response if they fail to process an OMF message, so it is not necessary to perform an explicit check against those endpoints. The containers and types are then deleted.
-
 ---
 
 For the main OMF samples page [ReadMe](https://github.com/osisoft/OSI-Samples-OMF)  
