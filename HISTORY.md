@@ -1,5 +1,9 @@
 # Version History
 
+## 1.2.0 / 2022-01-27
+
+- Updated for AVEVA Data Hub
+
 ## 1.1.2 / 2022-01-17
 
 - Updated dependencies
@@ -26,7 +30,7 @@
 - Updated pipeline to use internal agent pool
 - Updated pipeline to reference main branch
 - Fixed potential vulnerabilities detected by static analysis
-- Improved stability of OCS test
+- Improved stability of ADH test
 
 ## 1.0.6 / 2021-01-26
 

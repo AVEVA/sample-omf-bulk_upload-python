@@ -23,13 +23,13 @@ def send_container_delete(endpoint):
 
 
 def check_data(endpoint):
-    if endpoint["EndpointType"] == program.EndpointTypes.OCS:
-        check_last_ocs_val(endpoint)
+    if endpoint["EndpointType"] == program.EndpointTypes.ADH:
+        check_last_adh_val(endpoint)
     # don't have to check others as they are sync and we get instant feedback on success from the app itself
 
 
-def check_last_ocs_val(endpoint):
-    '''Wait for data to populate in OCS'''
+def check_last_adh_val(endpoint):
+    '''Wait for data to populate in ADH'''
     time.sleep(10)
     
     msg_headers = {
