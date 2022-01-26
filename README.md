@@ -13,11 +13,11 @@
 
 ---
 
-This sample uses AVEVA Message Format to send values, streams and types. This simple sample sends OMF messages that are saved pre-formed as files named type.json, container.json, and data.json. It sends the files in that order.
+This sample uses OSIsoft Message Format to send values, streams and types. This simple sample sends OMF messages that are saved pre-formed as files named type.json, container.json, and data.json. It sends the files in that order.
 
 It does only basic error checking to make sure the message was accepted by the endpoint, which means for ADH there is no built-in checking to ensure the upload worked completely. The primary function of this sample is for easy bulk loading of data for other samples (particularly ML based samples where the amount of data is prohibitive to include in the sample itself).
 
-## AVEVA Message Format Endpoints
+## OSIsoft Message Format Endpoints
 
 The sample is configured using the file [appsettings.placeholder.json](appsettings.placeholder.json). Before editing, rename this file to `appsettings.json`. This repository's `.gitignore` rules should prevent the file from ever being checked in to any fork or branch, to ensure credentials are not compromised.
 
