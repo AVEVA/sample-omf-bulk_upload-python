@@ -1,6 +1,6 @@
 # Bulk Uploader Python Sample
 
-**Version:** 1.1.2
+**Version:** 1.1.3
 
 ---
 
