@@ -84,6 +84,7 @@ jobs:
   - job: Tests_PI
     pool:
       name: 00-OSIManaged-Build
+      demands: PYTHON
     variables:
       - name: Endpoints.0.Selected
         value: false
