@@ -16,10 +16,6 @@
 
 - Updated for AVEVA Data Hub
 
-## 1.1.4 / 2022-06-20
-
-- Updated dependencies
-
 ## 1.1.3 / 2022-02-09
 
 - Changed agent used in pipeline
