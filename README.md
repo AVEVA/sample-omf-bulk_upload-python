@@ -50,7 +50,7 @@ The application can be configured to send to any number of endpoints specified i
 
 An OMF ingress client must be configured. On our [AVEVA Learning](https://www.youtube.com/channel/UC333r4jIeHaY-rGgMjON54g) Channel on YouTube we have a video on [Creating an OMF Connection](https://www.youtube.com/watch?v=52lAnkGC1IM).
 
-The format of the configuration for an Cds endpoint is shown below along with descriptions of each parameter. Replace all parameters with appropriate values.
+The format of the configuration for a Cds endpoint is shown below along with descriptions of each parameter. Replace all parameters with appropriate values.
 
 ```json
 {
