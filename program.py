@@ -1,6 +1,6 @@
-# NOTE: this script was designed using the v1.1
+# NOTE: this script was designed using the v1.2
 # version of the OMF specification, as outlined here:
-# https://omf-docs.osisoft.com/documentation_v11/Whats_New.html
+# https://docs.aveva.com/bundle/omf/page/1283983.html
 # *************************************************************************************
 
 # ************************************************************************
@@ -16,11 +16,11 @@ import time
 from urllib.parse import urlparse
 
 # The version of the OMF messages
-omf_version = '1.1'
+omf_version = '1.2'
 
 # List of possible endpoint types
 class EndpointTypes(enum.Enum):
-    ADH = 'ADH'
+    CDS = 'CDS'
     EDS = 'EDS'
     PI = 'PI'
 
@@ -29,8 +29,8 @@ def get_token(endpoint):
     '''Gets the token for the omfendpoint'''
 
     endpoint_type = endpoint["EndpointType"]
-    # return an empty string if the endpoint is not an ADH type
-    if endpoint_type != EndpointTypes.ADH:
+    # return an empty string if the endpoint is not an Cds type
+    if endpoint_type != EndpointTypes.CDS:
         return ''
 
     if (('expiration' in endpoint) and (endpoint["expiration"] - time.time()) > 5 * 60):
@@ -92,8 +92,8 @@ def send_message_to_omf_endpoint(endpoint, message_type, message_omf_json, actio
     # Send message to OMF endpoint
     endpoints_type = endpoint["EndpointType"]
     response = {}
-    # If the endpoint is ADH
-    if endpoints_type == EndpointTypes.ADH:
+    # If the endpoint is Cds
+    if endpoints_type == EndpointTypes.CDS:
         response = requests.post(
             endpoint["OmfEndpoint"],
             headers=msg_headers,
@@ -149,8 +149,8 @@ def get_headers(endpoint, compression='', message_type='', action=''):
     if(compression == 'gzip'):
         msg_headers["compression"] = 'gzip'
 
-    # If the endpoint is ADH
-    if endpoint_type == EndpointTypes.ADH:
+    # If the endpoint is Cds
+    if endpoint_type == EndpointTypes.CDS:
         msg_headers["Authorization"] = f'Bearer {get_token(endpoint)}'
     # If the endpoint is PI
     elif endpoint_type == EndpointTypes.PI:
@@ -205,8 +205,8 @@ def get_appsettings():
         endpoint["EndpointType"] = EndpointTypes(endpoint["EndpointType"])
         endpoint_type = endpoint["EndpointType"]
 
-        # If the endpoint is ADH
-        if endpoint_type == EndpointTypes.ADH:
+        # If the endpoint is Cds
+        if endpoint_type == EndpointTypes.CDS:
             base_endpoint = f'{endpoint["Resource"]}/api/{endpoint["ApiVersion"]}' + \
                 f'/tenants/{endpoint["TenantId"]}/namespaces/{endpoint["NamespaceId"]}'
 
